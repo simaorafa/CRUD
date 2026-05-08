@@ -7,7 +7,7 @@ public class LigacaoBD {
 
     private static final String URL =
 
-        "jdbc:mysql://localhost:3306/clientes_db";
+        "jdbc:mysql://localhost:3306/appdb";
 
 
     private static final String USER = "root";
