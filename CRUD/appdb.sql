@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 08-Maio-2026 às 15:45
+-- Tempo de geração: 08-Maio-2026 às 16:04
 -- Versão do servidor: 8.4.9
 -- versão do PHP: 8.3.26
 
@@ -34,15 +34,16 @@ CREATE TABLE `clientes` (
   `id` int NOT NULL,
   `nome` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `telefone` varchar(20) DEFAULT NULL
+  `telefone` varchar(20) DEFAULT NULL,
+  `nif` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Extraindo dados da tabela `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `nome`, `email`, `telefone`) VALUES
-(2, 'LIXO', 'LIXO@gmail.com', '141254125123513');
+INSERT INTO `clientes` (`id`, `nome`, `email`, `telefone`, `nif`) VALUES
+(2, 'LIXO', 'LIXO@gmail.com', '141254125123513', '');
 
 --
 -- Índices para tabelas despejadas
