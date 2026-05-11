@@ -205,6 +205,8 @@ public class App {
 
                             <th>ID</th>
 
+                            <th>Nif</th>
+
                             <th>Nome</th>
 
                             <th>Email</th>
@@ -241,15 +243,19 @@ public class App {
                     String nome = rs.getString("nome");
                     String email = rs.getString("email");
                     String telefone = rs.getString("telefone");
+                    String nifx = rs.getString("nif");
 
 
                     html.append("<tr>");
                     html.append("<td>").append(id).append("</td>");
+                    html.append("<td>").append(nifx).append("</td>");
                     html.append("<td>").append(nome).append("</td>");
                     html.append("<td>").append(email).append("</td>");
                     html.append("<td>").append(telefone).append("</td>");
+
                     html.append("<td>");
                     html.append("<a href='/editar?id=").append(id).append("'>Editar</a>");
+                    html.append("<a href='/inserir?id=").append(id).append("'>inserir</a>");
                     html.append("<a href='/apagar?id=").append(id)
                         .append("' onclick=\"return confirm('Eliminar cliente?')\">Apagar</a>");
                     html.append("</td>");
@@ -339,8 +345,13 @@ public class App {
 
                     <input name='telefone'>
 
+                    Nif:
+
+                    <input name='nif'required>
 
                     <button type='submit'>Guardar</button>
+
+
 
                 </form>
 
@@ -396,6 +407,8 @@ public class App {
 
                 String telefone = "";
 
+                String nif = "";
+
 
                 for (String p : params) {
 
@@ -416,6 +429,8 @@ public class App {
                             case "email": email = value; break;
 
                             case "telefone": telefone = value; break;
+
+                            case "nif": telefone = value; break;
 
                         }
 
@@ -442,6 +457,8 @@ public class App {
                 ps.setString(1, nome);
 
                 ps.setString(2, email);
+
+                 ps.setString(2, nif);
 
                 ps.setString(3, telefone);
 
@@ -589,6 +606,8 @@ server.createContext("/editar", exchange -> {
         String nome = rs.getString("nome");
 
         String email = rs.getString("email");
+
+        String nifString = rs.getString("nif");
 
         String telefone = rs.getString("telefone");
 
