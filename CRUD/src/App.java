@@ -347,7 +347,7 @@ public class App {
 
                     Nif:
 
-                    <input name='nif'required>
+                    <input name='nif' required>
 
                     <button type='submit'>Guardar</button>
 
@@ -430,7 +430,7 @@ public class App {
 
                             case "telefone": telefone = value; break;
 
-                            case "nif": telefone = value; break;
+                            case "nif": nif = value; break;
 
                         }
 
@@ -449,7 +449,7 @@ public class App {
                 }
 
 
-                String sql = "INSERT INTO clientes(nome,email,telefone) VALUES (?,?,?)";
+                String sql = "INSERT INTO clientes(nome,email,telefone,nif) VALUES (?,?,?,?)";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -458,9 +458,9 @@ public class App {
 
                 ps.setString(2, email);
 
-                 ps.setString(2, nif);
-
                 ps.setString(3, telefone);
+
+                ps.setString(4, nif);
 
 
                 ps.executeUpdate();
@@ -606,8 +606,6 @@ server.createContext("/editar", exchange -> {
         String nome = rs.getString("nome");
 
         String email = rs.getString("email");
-
-        String nifString = rs.getString("nif");
 
         String telefone = rs.getString("telefone");
 
