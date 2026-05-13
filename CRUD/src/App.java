@@ -937,11 +937,8 @@ public class App {
         server.start();
         System.out.println("Servidor em http://localhost:8080");
 
-
-
-        
-           //// LISTA de produtos
-        server.createContext("/produto", exchange -> {
+        //// LISTA de produtos
+        server.createContext("//produtos", exchange -> {
 
             StringBuilder html = new StringBuilder();
 
@@ -1455,7 +1452,7 @@ public class App {
                 String refproduto = "";
 
                 String produto = "";
-                
+
                 String preco = "";
 
                 for (String p : params) {
@@ -1587,7 +1584,7 @@ public class App {
 
                 }
 
-                String sql = "DELETE FROM clientes WHERE id=?";
+                String sql = "DELETE FROM produto WHERE id=?";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -1625,9 +1622,9 @@ public class App {
 
                     html.append("""
 
-                                <h2>Cliente apagado com sucesso!</h2>
+                                <h2>Produto apagado com sucesso!</h2>
 
-                                <a href='/clientes'>Voltar à lista</a>
+                                <a href='/produto'>Voltar à lista</a>
 
                             """);
 
@@ -1635,9 +1632,9 @@ public class App {
 
                     html.append("""
 
-                                <h2>! Cliente não encontrado!</h2>
+                                <h2>! Produto não encontrado!</h2>
 
-                                <a href='/clientes'>Voltar</a>
+                                <a href='/produto'>Voltar</a>
 
                             """);
 
@@ -1668,9 +1665,9 @@ public class App {
                             <body>r
 
 
-                            <h2>!!! Erro ao apagar cliente!</h2>
+                            <h2>!!! Erro ao apagar produto!</h2>
 
-                            <a href='/clientes'>Voltar</a>
+                            <a href='/produto'>Voltar</a>
 
 
                             </body>
@@ -1693,9 +1690,6 @@ public class App {
 
         server.start();
         System.out.println("Servidor em http://localhost:8080");
-
-
-
 
     }
 }
