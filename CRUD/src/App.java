@@ -1346,6 +1346,8 @@ public class App {
                     throw new Exception("produto não encontrado");
 
                 }
+                
+                int ID = rs.getInt("id");
 
                 String refproduto = rs.getString("refproduto");
 
