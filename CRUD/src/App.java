@@ -1,5 +1,4 @@
 import com.sun.net.httpserver.HttpServer;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +9,19 @@ public class App {
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(
                 new InetSocketAddress(8080), 0);
+
+        Connection initCon = LigacaoBD.ligar();
+        if (initCon != null) {
+            try {
+                Statement initSt = initCon.createStatement();
+                initSt.executeUpdate("CREATE TABLE IF NOT EXISTS produto (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, refproduto VARCHAR(100), produto VARCHAR(100), preco VARCHAR(100))");
+                initSt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                initCon.close();
+            }
+        }
 
         /// HOME
 
@@ -145,7 +157,7 @@ public class App {
 
                                     <p>Consultar lista completa</p>
 
-                                    <a href="/produtos">Abrir</a>
+                                    <a href="/produto">Abrir</a>
 
                                 </div>
                                  <div class="card">
@@ -937,8 +949,10 @@ public class App {
         server.start();
         System.out.println("Servidor em http://localhost:8080");
 
+
+
         //// LISTA de produtos
-        server.createContext("//produtos", exchange -> {
+        server.createContext("/produto", exchange -> {
 
             StringBuilder html = new StringBuilder();
 
@@ -966,7 +980,7 @@ public class App {
 
                         <body>
 
-                        <h2>Lista de produto</h2>
+                        <h2>Lista de produtos</h2>
 
                         <a href='/produtonovo'>+ Novo produto</a><br><br>
 
@@ -1084,16 +1098,15 @@ public class App {
                         <a href='/produto'>← Voltar à lista</a><br><br>
 
 
-                        <form method='POST' action='/guardar'>
+                        <form method='POST' action='/produtoguardar'>
 
                             ID:
 
                             <input name='id' required>
 
-
                             refproduto:
 
-                            <input name='refproduto' type='refproduto' required>
+                            <input name='refproduto' type='text' required>
 
 
                             produto:
@@ -1148,7 +1161,7 @@ public class App {
 
                 String[] params = body.split("&");
 
-                String ID = "";
+                String idStr = "";
 
                 String refproduto = "";
 
@@ -1168,8 +1181,8 @@ public class App {
 
                         switch (key) {
 
-                            case "ID":
-                                ID = value;
+                            case "id":
+                                idStr = value;
                                 break;
 
                             case "refproduto":
@@ -1198,11 +1211,13 @@ public class App {
 
                 }
 
-                String sql = "INSERT INTO clientes(ID,refproduto,produto,preco) VALUES (?,?,?,?)";
+                int id = Integer.parseInt(idStr);
+
+                String sql = "INSERT INTO produto(id,refproduto,produto,preco) VALUES (?,?,?,?)";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                ps.setString(1, ID);
+                ps.setInt(1, id);
 
                 ps.setString(2, refproduto);
 
@@ -1244,7 +1259,7 @@ public class App {
 
                             <a href='/produto'>Ver lista</a><br><br>
 
-                            <a href='/novo'>Inserir novo produto</a>
+                            <a href='/produtonovo'>Inserir novo produto</a>
 
 
                             </body>
@@ -1272,7 +1287,7 @@ public class App {
 
                             <h2>!! Erro ao guardar produto!</h2>
 
-                            <a href='/novo'>Voltar</a>
+                            <a href='/produto'>Voltar</a>
 
 
                             </body>
@@ -1367,13 +1382,13 @@ public class App {
                             <a href='/produto'>« Voltar</a><br><br>
 
 
-                            <form method='POST' action='/atualizar'>
+                            <form method='POST' action='/produtoatualizar'>
 
                         """);
 
                 html.append("<input type='hidden' name='id' value='").append(id).append("'>");
 
-                html.append("Nome:<input name='refroduto' value='").append(refproduto).append("' required>");
+                html.append("REF:<input name='refproduto' value='").append(refproduto).append("' required>");
 
                 html.append("Email:<input name='produto' value='").append(produto).append("' required>");
 
@@ -1408,9 +1423,9 @@ public class App {
 
                             <body>
 
-                            <h2>!Erro ao carregar cliente</h2>
+                            <h2>!Erro ao carregar produto</h2>
 
-                            <a href='/clientes'>Voltar</a>
+                            <a href='/produto'>Voltar</a>
 
                             </body>
 
@@ -1467,7 +1482,7 @@ public class App {
 
                         switch (key) {
 
-                            case "ID":
+                            case "id":
                                 idStr = value;
                                 break;
 
@@ -1690,6 +1705,9 @@ public class App {
 
         server.start();
         System.out.println("Servidor em http://localhost:8080");
-
+     
     }
 }
+
+
+
